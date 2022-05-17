@@ -60,27 +60,27 @@ def get_movie_datas():
         request_url = f"https://api.themoviedb.org/3/movie/{i}/watch/providers?api_key={TMDB_API_KEY}"
         movies = requests.get(request_url).json()
 
-        movie = movies['results']
-        print(movie)
-        kr_movie = movie['KR']
-        print(kr_movie)
-        ott_movie = kr_movie['flatrate']
-        print(ott_movie)
-        for ott in ott_movie: 
-            fields = {
-                'provider_id': ott['provider_id'],
-                'logo_path': ott['logo_path'],
-                'provider_name': ott['provider_name']
+        movie = movies["results"]
+        if movie.get('flatrate', ''):
+            kr_movie = movie["KR"]
+        if movie.get('flatrate', ''):
+            ott_movie = kr_movie["flatrate"]
+            print(ott_movie)
+            for ott in ott_movie: 
+                fields = {
+                    'provider_id': ott['provider_id'],
+                    'logo_path': ott['logo_path'],
+                    'provider_name': ott['provider_name']
 
-            }
+                }
 
-            data = {
-                "pk": i,
-                "model": "movies.movie",
-                "fields": fields
-            }
+                data = {
+                    "pk": i,
+                    "model": "movies.movie",
+                    "fields": fields
+                }
 
-            total_data.append(data)
+                total_data.append(data)
 
     with open("ott_data.json", "w", encoding="utf-8") as w:
         json.dump(total_data, w, ensure_ascii=False)
