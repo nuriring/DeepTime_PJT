@@ -50,13 +50,13 @@ dic_list = list(dic_val)
 
 # get_movie_datas()
 
-TMDB_API_KEY = ''
+TMDB_API_KEY = 'e6149bf41aaefec295f3595be639b5c7'
 
 def get_movie_datas():
     total_data = []
 
     # 1페이지부터 500페이지까지 (페이지당 20개, 총 10,000개)
-    for i in dic_list:
+    for i in dic_list[0:11]:
         request_url = f"https://api.themoviedb.org/3/movie/{i}/watch/providers?api_key={TMDB_API_KEY}"
         movies = requests.get(request_url).json()
 
