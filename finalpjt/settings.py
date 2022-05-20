@@ -29,21 +29,43 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
+# 유저 인증 관련해서 app이랑 middleware만 추가해 놓았습니다
 INSTALLED_APPS = [
+    #local apps
     'movies',
     'accounts',
     'articles',
-    
+
+    # 3rd party apps
+    'django_extensions',
+
+    'rest_framework',
+    'rest_framework.authtoken',  # token 기반 auth
+
+    # DRF auth
+    'dj_rest_auth',  # signup 제외 auth 관련 담당
+    'dj_rest_auth.registration',  # signup 담당
+
+    # signup 담당을 위해 필요 
+    'allauth', 
+    'allauth.account',
+    'allauth.socialaccount',
+
+    # CORS 세팅
+    'corsheaders',
+
+    # native apps 
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',  # dj-rest-auth signup 필요
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', #cors
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -107,9 +129,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ko-kr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/seoul'
 
 USE_I18N = True
 
