@@ -48,7 +48,7 @@ df_dict = data.to_dict()
 
 dic_val = df_dict['id'].values()
 dic_list = list(dic_val)
-
+print(dic_list)
 
 
 # '''
@@ -82,7 +82,7 @@ for i in dic_list[0:3000]:
         #     for flatrate in flatrate_list:
         #         total_data[i] = flatrate['provider_name']
 # print(total_data)
-with open('./test.csv', 'w', encoding='UTF-8') as f:
+with open('./test2.csv', 'w', encoding='UTF-8') as f:
     w = csv.writer(f)
     w.writerow(total_data.keys())
     w.writerow(total_data.values())
