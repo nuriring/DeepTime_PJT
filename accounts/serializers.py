@@ -12,7 +12,7 @@ class SingupSerializer(serializers.ModelSerializer):
     class GenreSerializer(serializers.ModelSerializer): #회원가입시 좋아하는 장르 고를 수 있게 보여주기
         class Meta:
             model = Genre
-            fields = ('pk', 'name')
+            fields = ('id', 'name')
 
     class Meta:
         model = User
@@ -25,13 +25,13 @@ class ProfileSerializer(serializers.ModelSerializer):
     class ArticleSerializer(serializers.ModelSerializer):
         class Meta:
             model = Article
-            fields = ('pk', 'title', 'content') #게시글 에서 보여줄 필드 : pk, 제목, 내용 
+            fields = ('id', 'title', 'content') #게시글 에서 보여줄 필드 : id, 제목, 내용 
 
     #2
     class GenreSerializer(serializers.ModelSerializer): #프로필에서 유저가 좋아하는 장르 보여주기
         class Meta:
             model = Genre
-            fields = ('pk', 'name')
+            fields = ('id', 'name')
 
     #1
     like_articles = ArticleSerializer(many=True) #유저가 좋아요한 게시글
@@ -43,7 +43,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('pk', 'username', 'like_articles', 'articles', 'genre') #유저가 좋아하는 장르도 보여주고 싶은데 이렇게 될라나 모르겠넹
+        fields = ('id', 'username', 'like_articles', 'articles', 'genre') #유저가 좋아하는 장르도 보여주고 싶은데 이렇게 될라나 모르겠넹
 
     
 
