@@ -48,12 +48,12 @@ df_dict = data.to_dict()
 
 dic_val = df_dict['id'].values()
 dic_list = list(dic_val)
-print(dic_list)
+# print(dic_list)
 
 
 # '''
 total_data = {}
-for i in dic_list[0:3000]:
+for i in dic_list:
 
     request_url = f"https://api.themoviedb.org/3/movie/{i}/watch/providers?api_key={TMDB_API_KEY}"
     movies = requests.get(request_url).json()
