@@ -43,7 +43,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'like_articles', 'articles', 'genre') #유저가 좋아하는 장르도 보여주고 싶은데 이렇게 될라나 모르겠넹
+        fields = ('id', 'username', 'like_articles', 'articles', 'genre') 
 
     
 
