@@ -8,7 +8,7 @@ class Genre(models.Model):
 class Movie(models.Model):
     id = models.IntegerField(primary_key=True)
     backdrop_path = models.TextField()
-    genre = models.ManyToManyField(Genre, related_name='movie_genre')
+    genre = models.ManyToManyField(Genre, related_name='movies')
     overview = models.TextField()
     popularity = models.FloatField()
     release_date = models.DateField()
