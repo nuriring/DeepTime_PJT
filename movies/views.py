@@ -1,18 +1,59 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
+from .models import Movie
+from django.db.models import Count
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers.movie import MovieListSerializer,MovieSerializer
+from .serializers.review import ReviewSerializer
+from rest_framework import status
+
+
 
 # Create your views here.
 
-def movie_list():
-    pass
+@api_view(['GET'])
+def movie_list(request):
+    if request.method =='GET':
+        #like_count 개수 추가
+        movies = Movie.objects.annotate(
+            like_count=Count('like_users', distinct=True)
+        ).order_by('-popularity') #인기순으로 정렬 #장르순으로 정렬 시리얼라이저 추가로 만들고 무비리스트 한개더 만들어야 할듯?
+        serializer = MovieListSerializer(movies, many=True)
+        return Response(serializer.data)
+    
+@api_view(['GET'])
+def movie_detail(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    if request.method == 'GET':
+        serializer = MovieSerializer(movie)
+        return Response(serializer.data)
 
-def movie_detail():
-    pass
+@api_view(['POST'])
+def like_movie(request, movie_pk):
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    user = request.user
+    if movie.like_users.filter(pk=user.pk).exists():
+        movie.like_users.remove(user)
+        serializer = MovieSerializer(movie)
+        return Response(serializer.data)
+    else:
+        movie.like_users.add(user)
+        serializer = MovieSerializer(movie)
+        return Response(serializer.data)
+    
+@api_view(['POST'])
+def create_review(request, movie_pk):
+    user = request.user
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    serializer = ReviewSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save(movie=movie, user=user)
 
-def like_movie():
-    pass
-
-def create_review():
-    pass
+        # 기존 serializer 가 return 되면, 단일 comment 만 응답으로 받게됨.
+        # 사용자가 댓글을 입력하는 사이에 업데이트된 comment 확인 불가 => 업데이트된 전체 목록 return 
+        reviews = movie.reviews.all()
+        serializer = ReviewSerializer(reviews, many=True)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 def review_update_or_delete():
     pass
