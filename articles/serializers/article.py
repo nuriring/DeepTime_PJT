@@ -8,7 +8,6 @@ from .comment import CommentSerializer
 User = get_user_model()
 
 
-
 #게시글 상세 조회 및 생성
 class ArticleSerializer(serializers.ModelSerializer):
     
@@ -36,8 +35,13 @@ class ArticleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
+<<<<<<< HEAD
         fields = ('id', 'user', 'title', 'content', 'category', 'comments', 'like_count', 'comment_count' ) #게시글 상세정보에서 보여줄 필드
          
+=======
+        fields = ('id', 'user', 'title', 'content', 'category', 'comments', 'created_at', 'like_count', 'comment_count' ) #게시글 상세정보에서 보여줄 필드
+        
+>>>>>>> 93221f20c5c9eb6ac9154817d6d17a600c703b9b
 
 #게시글 리스트 조회
 class ArticleListSerializer(serializers.ModelSerializer):
