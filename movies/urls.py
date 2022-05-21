@@ -11,8 +11,9 @@ urlpatterns = [
     
     # reviews
     path('<int:movie_pk>/reviews/', views.create_review),
-    path('<int:movie_pk>/reviews/<int:review_pk>', views.review_update_or_delete),
+    path('<int:movie_pk>/reviews/<int:review_pk>/', views.review_update_or_delete),
+    path('<int:movie_pk>/reviews/<int:review_pk>/like/', views.review_like),
 
     # ott
-    path('ott/', views.ott_list),
+    path('otts/', views.ott_list),
 ]
