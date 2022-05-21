@@ -28,9 +28,9 @@ class ArticleSerializer(serializers.ModelSerializer):
     
     # queryset annotate (views에서 채워줄것!)
     #게시글 좋아요 수 보여주기
-    like_count = serializers.IntegerField()
+    like_count = serializers.IntegerField(read_only=True)
     #게시글에 달린 댓글 수 보여주기
-    comment_count = serializers.IntegerField()
+    comment_count = serializers.IntegerField(read_only=True)
 
 
     class Meta:
