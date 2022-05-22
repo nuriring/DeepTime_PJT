@@ -1,10 +1,13 @@
-from django.shortcuts import get_object_or_404, render
-from .models import Movie,Review
+from django.shortcuts import get_list_or_404, get_object_or_404, render
+
+from .serializers.ott import OttSerializer
+from .models import Movie, Ott,Review
 from django.db.models import Count
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers.movie import MovieListSerializer,MovieSerializer
 from .serializers.review import ReviewListSerializer, ReviewSerializer
+from .serializers.ott import MovieOttSerializer
 from rest_framework import status
 
 
@@ -104,6 +107,25 @@ def review_detail_or_update_or_delete(request, movie_pk, review_pk):
             return delete_review()
 
 
-
-def ott_list():
-    pass
+@api_view(['GET'])
+def ott_list(request, provider_name):
+    if request.method =='GET':
+        # ott_movies = get_list_or_404(Ott, provider_name=provider_name)
+        # serializer = OttSerializer(ott_movies, many=True)
+        # print(type(serializer.data))
+        ott_movies = get_list_or_404(Ott, provider_name=provider_name)
+        movies_id = []
+        movies = []
+        serializer = OttSerializer(ott_movies, many=True)
+        for i in range(len(serializer.data)):
+            movies_id.append((list(serializer.data))[i]['movie_id'])
+        for i in range(len(movies_id)):
+            num = movies_id[i]
+            print(num)
+            movie = Movie.objects.get(pk=num)
+            movie_serializer = MovieOttSerializer(movie)
+            movies.append(movie_serializer.data)
+        # print(movies)
+        return Response(movies)
+        # # print(len(serializer.data))
+        # # print((list(serializer.data))[0]['movie_id'])

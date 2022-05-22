@@ -15,5 +15,5 @@ urlpatterns = [
 
 
     # ott
-    path('otts/', views.ott_list),
+    path('ott/<str:provider_name>/', views.ott_list),
 ]
