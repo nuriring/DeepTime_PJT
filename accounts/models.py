@@ -4,4 +4,4 @@ from movies.models import Genre
 
 # Create your models here.
 class User(AbstractUser):
-    genre = models.ForeignKey(Genre, on_delete=models.CASCADE, related_name="users", blank=True, null=True)
+    genre = models.IntegerField()

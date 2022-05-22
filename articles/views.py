@@ -1,4 +1,4 @@
-# articles/views.py
+# categorys/views.py
 
 from django.shortcuts import get_object_or_404
 from django.db.models import Count
@@ -6,8 +6,8 @@ from django.db.models import Count
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Article, Comment
-from .serializers.article import ArticleListSerializer, ArticleSerializer
+from .models import Article, Comment, Category
+from .serializers.article import ArticleListSerializer, ArticleSerializer, CategorySerializer
 from .serializers.comment import CommentSerializer
 
 
@@ -24,9 +24,10 @@ def article_list_or_create(request):
         return Response(serializer.data)
     
     def create_article():
+        category = Category.objects.filter(name=request.data['category'])[0]
         serializer = ArticleSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save(user=request.user)
+            serializer.save(category=category, user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     if request.method == 'GET':
@@ -120,3 +121,10 @@ def comment_update_or_delete(request, article_pk, comment_pk):
         return update_comment()
     elif request.method == 'DELETE':
         return delete_comment()
+
+@api_view(['GET'])
+def category_list(request):
+    if request.method == 'GET':
+        categorys = Category.objects.all()
+        serializer = CategorySerializer(categorys, many=True)
+        return Response(serializer.data)

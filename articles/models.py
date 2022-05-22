@@ -6,11 +6,13 @@ from movies.models import Movie
 
 # Create your models here.
 class Category(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, null=False)
+    def __str__(self):
+        return self.name
 
 class Article(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='articles')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="articles", null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="articles", null=False)
     title = models.CharField(max_length=100)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
