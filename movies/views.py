@@ -21,7 +21,7 @@ def movie_list(request):
         #like_count 개수 추가
         movies = Movie.objects.annotate(
             like_count=Count('like_users', distinct=True)
-        ).order_by('-popularity') #인기순으로 정렬 #장르순으로 정렬 시리얼라이저 추가로 만들고 무비리스트 한개더 만들어야 할듯?
+        ).order_by('-popularity')[0:100] #인기순으로 정렬 #장르순으로 정렬 시리얼라이저 추가로 만들고 무비리스트 한개더 만들어야 할듯?
         serializer = MovieListSerializer(movies, many=True)
         return Response(serializer.data)
     
