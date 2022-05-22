@@ -4,20 +4,21 @@ from django.contrib.auth import get_user_model
 from articles.models import Article
 from articles.serializers.comment import CommentSerializer
 from movies.models import Genre
-
+from dj_rest_auth.registration.serializers import RegisterSerializer
 User = get_user_model()
 
 #회원가입 시 유저 관련 정보
-class SingupSerializer(serializers.ModelSerializer):
-    class GenreSerializer(serializers.ModelSerializer): #회원가입시 좋아하는 장르 고를 수 있게 보여주기
-        class Meta:
-            model = Genre
-            fields = ('id', 'name')
 
-    class Meta:
-        model = User
-        fields = ('__all__')
 
+class CustomRegisterSerializer(RegisterSerializer):
+
+    genre = serializers.IntegerField()
+
+    def get_cleaned_data(self):
+        data = super().get_cleaned_data()
+        data['genre'] = self.validated_data.get('genre', '')
+
+        return data
 
 #유저관련 프로필 정보
 class ProfileSerializer(serializers.ModelSerializer):
