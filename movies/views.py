@@ -1,7 +1,8 @@
+from re import A
 from django.shortcuts import get_list_or_404, get_object_or_404, render
 
 from .serializers.ott import OttSerializer
-from .models import Movie, Ott,Review
+from .models import Movie, Ott,Review, Genre
 from django.db.models import Count
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -24,7 +25,17 @@ def movie_list(request):
         ).order_by('-popularity')[0:100] #인기순으로 정렬 #장르순으로 정렬 시리얼라이저 추가로 만들고 무비리스트 한개더 만들어야 할듯?
         serializer = MovieListSerializer(movies, many=True)
         return Response(serializer.data)
-    
+
+@api_view(['GET'])
+def genre_movie_list(request, genre_pk):
+    if request.method =='GET':
+        genre = Genre.objects.get(pk=genre_pk)
+        movies = genre.movies.annotate(
+            like_count=Count('like_users', distinct=True)
+        ).order_by('-pk')[0:100]
+        serializer = MovieListSerializer(movies, many=True)
+        return Response(serializer.data)
+
 @api_view(['GET'])
 def movie_detail(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
