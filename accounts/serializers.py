@@ -47,4 +47,4 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'like_articles', 'articles', 'genre', 'comments', 'reviews') #유저가 좋아하는 장르도 보여주고 싶은데 이렇게 될라나 모르겠넹
 
 
-    
+
