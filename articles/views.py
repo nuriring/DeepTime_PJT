@@ -20,6 +20,7 @@ def article_list_or_create(request):
             comment_count=Count('comments', distinct=True),
             like_count=Count('like_users', distinct=True)
         ).order_by('-pk')
+        print(articles[0].category.id)
         serializer = ArticleListSerializer(articles, many=True)
         return Response(serializer.data)
     
@@ -34,6 +35,16 @@ def article_list_or_create(request):
         return article_list()
     elif request.method == 'POST':
         return create_article()
+
+@api_view(['GET'])
+def category_article_list(request, category_pk):
+    articles = Article.objects.annotate(
+        comment_count=Count('comments', distinct=True),
+        like_count=Count('like_users', distinct=True)
+    ).filter(category_id=category_pk)
+    serializer = ArticleListSerializer(articles, many=True)
+    return Response(serializer.data)
+
 
 
 @api_view(['GET', 'PUT', 'DELETE'])

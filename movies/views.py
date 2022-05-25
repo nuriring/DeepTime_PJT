@@ -132,7 +132,6 @@ def ott_list(request, provider_name):
             movies_id.append((list(serializer.data))[i]['movie_id'])
         for i in range(len(movies_id)):
             num = movies_id[i]
-            print(num)
             movie = Movie.objects.get(pk=num)
             movie_serializer = MovieOttSerializer(movie)
             movies.append(movie_serializer.data)
